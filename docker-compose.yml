@@ -15,3 +15,5 @@ services:
         - ${POSTGRES_PORT}:${POSTGRES_PORT}
       volumes:
         - nest_db_data:/var/lib/postgresql/data
+volumes:
+  nest_db_data:        
