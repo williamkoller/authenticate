@@ -6,13 +6,9 @@ import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(UserRepository) private readonly userRepository: UserRepository) {}
+  constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {}
 
   async create(data: CreateUserDto): Promise<User> {
-    const userExists = await this.findUserByEmail({ email: data.email });
-    if (userExists) {
-      throw new BadGatewayException('User already registered with this email.');
-    }
     return await this.userRepository.createUser(data);
   }
 
@@ -22,10 +18,5 @@ export class UserService {
       throw new NotFoundException('User not ound');
     }
     return userEmail;
-  }
-
-  async findOne(username: string): Promise<User> {
-    const users = await this.userRepository.find();
-    return users.find((user) => user.username === username);
   }
 }
