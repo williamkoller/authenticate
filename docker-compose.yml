@@ -1,9 +1,9 @@
 version: '3.1'
 services:
-  auth_database:
+  postgres:
       image: postgres:13.1-alpine
       restart: always
-      container_name: auth_database
+      container_name: postgres
       env_file:
         - .env
       environment:
