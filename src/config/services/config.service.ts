@@ -18,14 +18,6 @@ class ConfigService {
     return this;
   }
 
-  public getSentryConfig() {
-    const environment = this.getValue('SENTRY_ENV', false) || 'LOCALHOST';
-    const dsn = this.getValue('SENTRY_DSN', false);
-    const bucketName = this.getValue('BUCKET', false);
-    const bucketRegion = this.getValue('AWS_REGION', false);
-    return { environment, dsn, bucketName, bucketRegion };
-  }
-
   public getPort() {
     return this.getValue('PORT', true);
   }
@@ -51,7 +43,7 @@ class ConfigService {
         autoLoadEntities: true,
         migrationsTableName: 'migration',
         cli: {
-          migrationsDir: 'src/migration',
+          migrationsDir: 'src/migrations',
         },
         retryAttempts: 3,
         retryDelay: 3000,
