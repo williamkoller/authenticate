@@ -23,4 +23,9 @@ export class UserService {
     }
     return userEmail;
   }
+
+  async findOne(username: string): Promise<User> {
+    const users = await this.userRepository.find();
+    return users.find((user) => user.username === username);
+  }
 }
