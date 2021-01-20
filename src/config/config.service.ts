@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+
 require('dotenv').config();
 
 class ConfigService {
@@ -16,6 +17,14 @@ class ConfigService {
   public ensureValues(keys: string[]) {
     keys.forEach((k) => this.getValue(k, true));
     return this;
+  }
+
+  public getSentryConfig() {
+    const environment = this.getValue('SENTRY_ENV', false) || 'LOCALHOST';
+    const dsn = this.getValue('SENTRY_DSN', false);
+    const bucketName = this.getValue('BUCKET', false);
+    const bucketRegion = this.getValue('AWS_REGION', false);
+    return { environment, dsn, bucketName, bucketRegion };
   }
 
   public getPort() {
@@ -43,7 +52,7 @@ class ConfigService {
         autoLoadEntities: true,
         migrationsTableName: 'migration',
         cli: {
-          migrationsDir: 'src/migrations',
+          migrationsDir: 'src/migration',
         },
         retryAttempts: 3,
         retryDelay: 3000,
@@ -60,9 +69,7 @@ class ConfigService {
         database: this.getValue('POSTGRES_DATABASE'),
         logging: JSON.parse(this.getValue('LOGGING')),
         migrationsTableName: 'seeds',
-        migrations: [
-          `${__dirname}/../seeds/${this.getValue('MODE')}/**/*{.ts,.js}`,
-        ],
+        migrations: [`${__dirname}/../seeds/${this.getValue('MODE')}/**/*{.ts,.js}`],
         cli: {
           migrationsDir: `src/seeds/${this.getValue('MODE')}`,
         },
