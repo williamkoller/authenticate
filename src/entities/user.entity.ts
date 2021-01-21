@@ -12,7 +12,7 @@ export class User {
   @Column({ type: 'varchar', nullable: false })
   email: string;
 
-  @Column({ transformer: hashPasswordTransform, select: false })
+  @Column({ transformer: hashPasswordTransform })
   password: string;
 
   @CreateDateColumn()
