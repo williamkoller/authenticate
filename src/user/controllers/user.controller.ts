@@ -21,7 +21,9 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('find-user-by-email')
   async findUserByEmail(@Body() email: string): Promise<User> {
-    return await this.userService.findUserByEmail(email);
+    const user = await this.userService.findUserByEmail(email);
+    delete user.password;
+    return user;
   }
 
   @UseGuards(JwtAuthGuard)
