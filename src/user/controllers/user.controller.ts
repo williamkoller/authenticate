@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Injectable, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Injectable, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt-auth.guard';
 import { User } from 'src/entities/user.entity';
 import { CreateUserDto, ReturnUserDto } from '../dtos';
 import { UserService } from '../services/user.service';
@@ -17,8 +18,15 @@ export class UserController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('find-user-by-email')
-  async findUserByEmail(@Body() isEmail: { email: string }): Promise<User> {
-    return await this.userService.findUserByEmail({ email: isEmail.email });
+  async findUserByEmail(@Body() email: string): Promise<User> {
+    return await this.userService.findUserByEmail(email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('find-user-by-id')
+  async findUserById(@Body() id: string): Promise<User> {
+    return await this.userService.findUserById(id);
   }
 }
