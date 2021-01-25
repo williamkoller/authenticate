@@ -1,11 +1,11 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { configService } from './config/config.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrmConfig } from './config/typeorm-config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(configService.getTypeOrmConfig()[0]), forwardRef(() => UserModule), AuthModule],
+  imports: [TypeOrmModule.forRoot(TypeOrmConfig), forwardRef(() => UserModule), forwardRef(() => AuthModule)],
   controllers: [],
   providers: [],
 })

@@ -8,11 +8,11 @@ import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { User } from '../user/models/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserRepository]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory: () => ({
@@ -24,7 +24,7 @@ import { User } from 'src/entities/user.entity';
     }),
     forwardRef(() => UserModule),
   ],
-  providers: [AuthService, UserService, UserRepository, JwtStrategy],
+  providers: [AuthService, UserService, JwtStrategy],
   exports: [AuthService, JwtModule],
   controllers: [AuthController],
 })
