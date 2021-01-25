@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../user/models/user.entity';
 import { UserService } from 'src/user/services/user.service';
 import { AuthInput } from '../dtos/auth.input';
 import { AuthType } from '../dtos/auth.type';
@@ -12,7 +12,6 @@ export class AuthService {
 
   async validateUser(data: AuthInput): Promise<AuthType> {
     const user = await this.userService.findUserByEmail(data.email);
-
     const validPassword = compareSync(data.password, user.password);
     if (!validPassword) {
       throw new BadRequestException('Incorrect email or password');
@@ -30,7 +29,7 @@ export class AuthService {
   async login(user: User): Promise<string> {
     const payload = {
       username: user.username,
-      sub: user.id,
+      sub: user._id,
     };
     return this.jwtService.signAsync(payload);
   }
