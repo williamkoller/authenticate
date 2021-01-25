@@ -1,4 +1,4 @@
-import { User } from 'src/entities/user.entity';
+import { User } from '../../user/models/user.entity';
 
 export type AuthType = {
   user: User;
