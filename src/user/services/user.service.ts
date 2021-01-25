@@ -1,23 +1,15 @@
-import { BadGatewayException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
-import { Connection } from 'typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { User } from '../models/user.entity';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(UserRepository) private readonly userRepository: UserRepository,
-    private readonly connection: Connection,
-  ) {
-    this.userRepository = this.connection.getCustomRepository(UserRepository);
-  }
+  constructor(private readonly userRepository: UserRepository) {}
 
   async create(data: CreateUserDto): Promise<User> {
     return await this.userRepository.createUser(data);
   }
-
   async findUserByEmail(email: string): Promise<User> {
     return await this.userRepository.findUserByEmail(email);
   }
