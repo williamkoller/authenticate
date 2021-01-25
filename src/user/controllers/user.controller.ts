@@ -25,10 +25,4 @@ export class UserController {
     delete user.password;
     return user;
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('find-user-by-id')
-  async findUserById(@Body() id: string): Promise<User> {
-    return await this.userService.findUserById(id);
-  }
 }

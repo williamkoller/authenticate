@@ -1,28 +1,34 @@
+import { IsNotEmpty, IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ObjectID,
   ObjectIdColumn,
   PrimaryColumn,
-  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Unique(['email'])
-@Entity()
+@Entity('users')
 export class User {
   @ObjectIdColumn()
   _id: ObjectID;
 
   @PrimaryColumn()
-  @Column({ nullable: false })
+  @Column()
+  @IsString()
   username: string;
 
-  @Column({ nullable: false })
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  @Index({ unique: true })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column()
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
