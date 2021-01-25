@@ -19,9 +19,6 @@ export class UserRepository extends MongoRepository<User> {
 
   async findUserByEmail(email: string): Promise<User> {
     const emailUser = await this.findOne({ where: email });
-    if (emailUser.email === email) {
-      throw new BadRequestException('User already exists with this email.');
-    }
     if (!emailUser) {
       throw new NotFoundException('User not found.');
     }
